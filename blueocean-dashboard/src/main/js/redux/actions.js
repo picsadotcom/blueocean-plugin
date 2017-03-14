@@ -246,7 +246,7 @@ export const actions = {
     clearPipelineData() {
         return (dispatch) => dispatch({ type: ACTION_TYPES.CLEAR_PIPELINE_DATA });
     },
-    
+
     /**
      * Returns cached global pipeline list or causes a fetch
      */
@@ -647,7 +647,7 @@ export const actions = {
     fetchNodes(config) {
         return (dispatch, getState) => {
             const data = getState().adminStore.nodes;
-            const nodesBaseUrl = calculateNodeBaseUrl(config);
+            const nodesBaseUrl = calculateNodeBaseUrl(config) + '?limit=10000';
 
             function getNodeAndSteps(information) {
                 let nodeModel;
