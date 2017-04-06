@@ -36,6 +36,13 @@ export class PipelineService extends BunkerService {
         });
     }
 
+    searchAllPipelinesPager(name) {
+        return this.pagerService.getPager({
+            key: `PipelinesAll-${name}`,
+            lazyPager: () => new Pager(RestPaths.allPipelinesStartsWith(name), 25, this),
+        });
+    }
+
     /**
      * Gets pager for /blue/organization/:organization/pipelines
      *

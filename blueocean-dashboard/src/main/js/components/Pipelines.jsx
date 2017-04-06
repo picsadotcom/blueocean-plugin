@@ -1,6 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Link } from 'react-router';
-import { Page, Table } from '@jenkins-cd/design-language';
+import { Page, Table, TextInput } from '@jenkins-cd/design-language';
 import { i18nTranslator, ContentPageHeader, AppConfig, ShowMoreButton } from '@jenkins-cd/blueocean-core-js';
 import Extensions from '@jenkins-cd/js-extensions';
 import { documentTitle } from './DocumentTitle';
@@ -11,27 +11,34 @@ import { observer } from 'mobx-react';
 
 const translate = i18nTranslator('blueocean-dashboard');
 
-
 @observer
 export class Pipelines extends Component {
-    componentWillMount() {
-        this._initPager(this.props);
+    constructor() {
+        super();
+        this.state = {};
     }
-
-    componentWillReceiveProps(nextProps) {
-        this._initPager(nextProps);
+    onChange = (text) => {
+        this.setState({ text });
     }
-
-    _initPager(props) {
-        const org = props.params.organization;
+    _initPager() {
+        console.log('state', this.state);
+        const { params } = this.props;
+        const org = params.organization;
         if (org) {
             this.pager = this.context.pipelineService.organiztionPipelinesPager(org);
         } else {
-            this.pager = this.context.pipelineService.allPipelinesPager();
+            if (this.state.text && this.state.text.length > 0) {
+                this.pager = this.context.pipelineService.searchAllPipelinesPager(this.state.text);
+                console.log('pager', this.pager);    
+            } else {
+                  console.log('here2');    
+                this.pager = this.context.pipelineService.allPipelinesPager();
+            }
         }
     }
 
     render() {
+        this._initPager();
         const pipelines = this.pager.data;
         const { organization, location = { } } = this.context.params;
 
@@ -78,6 +85,7 @@ export class Pipelines extends Component {
                             store={ this.context.store }
                             router={ this.context.router }
                         />
+                        <TextInput onChange={this.onChange}></TextInput>
                         <Table
                             className="pipelines-table"
                             headers={ headers }
@@ -116,6 +124,7 @@ Pipelines.contextTypes = {
 
 Pipelines.propTypes = {
     setTitle: func,
+    params: object,
 };
 
 export default documentTitle(Pipelines);

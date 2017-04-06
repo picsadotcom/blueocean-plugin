@@ -18,6 +18,9 @@ export default {
         return `${this.apiRoot()}/search/?q=type:pipeline;excludedFromFlattening:jenkins.branch.MultiBranchProject,hudson.matrix.MatrixProject&filter=no-folders`;
     },
 
+    allPipelinesStartsWith(name) {
+        return `${this.apiRoot()}/search/?q=type:pipeline;startsWith:${encodeURIComponent(name)};excludedFromFlattening:jenkins.branch.MultiBranchProject,hudson.matrix.MatrixProject&filter=no-folders`;
+    },
     activities(organization, pipeline) {
         return `${this.apiRoot()}/organizations/${encodeURIComponent(organization)}/pipelines/${pipeline}/activities/`;
     },
