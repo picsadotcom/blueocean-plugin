@@ -78,14 +78,4 @@ export class ActivityService extends BunkerService {
                 console.log('There has been an error while trying to get the data.', err); // FIXME: Ivan what is the way to return an "error" opbject so underlying component are aware of the problem and can react
             });
     }
-
-    /**
-     * Fetches artifacts for a given run.
-     *
-     * @param {string} runHref The href of the run to fetcfh artifacts for.
-     * @returns {Object} Object containing zipFile link and list of artifacts.
-     */
-    fetchArtifacts(runHref) {
-        return mobxUtils.fromPromise(Fetch.fetchJSON(`${runHref}artifacts/?start=0&limit=101`));
-    }
 }
